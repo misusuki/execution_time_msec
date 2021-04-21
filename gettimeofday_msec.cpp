@@ -1,3 +1,4 @@
+// g++ -o gettimeofday_msec gettimeofday_msec.cpp
 #include "Execution.h"
 int main()
 {
