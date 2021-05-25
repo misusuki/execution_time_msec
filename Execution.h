@@ -2,12 +2,10 @@
 #include <sys/time.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <fstream>
 
-long Execution[100];
-long seconds, mseconds, useconds;   
-struct timeval start, end;
+double Execution[30];
 
-    
 class  Execution_Watch
 {
 public:
@@ -17,27 +15,31 @@ public:
     }
     // Start counter.
     void TStart()
-    {      gettimeofday(&start, NULL);
-    }
+     { 
+		clock_gettime(CLOCK_REALTIME, &start_time); 
+	 }
     // Stop counter.
     void TStop()
-    {    gettimeofday(&end, NULL);
-    }
+    {   
+		clock_gettime(CLOCK_REALTIME, &end_time); 
+     }
     // Get duration.
-    long Execution_Time()
-    {   seconds  = end.tv_sec  - start.tv_sec;
-		useconds = end.tv_usec - start.tv_usec;
-
-		mseconds = ((seconds) * 1000 + useconds/1000.0) + 0.5;
-		
+    double Execution_Time()
+    {   
+		double sec = end_time.tv_sec - start_time.tv_sec;
+		double nsec = end_time.tv_nsec - start_time.tv_nsec;
+		double mseconds = ((sec) * 1000000L + nsec/1000000L) ;
 		return mseconds;
     }
+       
 	
 private:
-	
+	struct timespec start_time; 
+	struct timespec end_time;  
 };
 
 // Execution watch object.
- Execution_Watch timer[100];
+ Execution_Watch timer[30];
+
 
 
